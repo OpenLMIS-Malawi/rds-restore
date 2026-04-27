@@ -22,4 +22,8 @@ export MASTER_USER_PASSWORD=some-password
 # VPC security group id
 export SECURITY_GROUP=
 
+# Name of subnet and parameters group
+export NAME_OF_SUBNET_GROUP_IN_TARGET_VPC=
+export DB_PARAMETER_GROUP_NAME=
+
 ./restore_db_from_snapshot.sh

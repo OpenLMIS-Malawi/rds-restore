@@ -1,4 +1,3 @@
-version: "2"
 services:
     rds-restore:
         image: openlmismw/rds-restore:1.0

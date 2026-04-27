@@ -12,7 +12,7 @@ cp sample-config/.env .
 
 Then edit the file, so that it contains required credentials and RDS instance ids.
 
-Next simply run the script script using Docker Compose:
+Next simply run the script using Docker Compose:
 
 ```bash
 docker-compose run rds-restore

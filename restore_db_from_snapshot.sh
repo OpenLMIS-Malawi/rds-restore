@@ -8,6 +8,8 @@
 : ${TARGET_INSTANCE:?"Need to set TARGET_INSTANCE"}
 : ${MASTER_USER_PASSWORD:?"Need to set MASTER_USER_PASSWORD"}
 : ${SECURITY_GROUP:?"Need to set SECURITY_GROUP"}
+: ${NAME_OF_SUBNET_GROUP_IN_TARGET_VPC:?"Need to set NAME_OF_SUBNET_GROUP_IN_TARGET_VPC"}
+: ${DB_PARAMETER_GROUP_NAME:?"Need to set DB_PARAMETER_GROUP_NAME"}
 
 restore_db_from_snapshot() {
     SNAPSHOT_INSTANCE=$SOURCE_INSTANCE"-snapshot"
@@ -59,10 +61,13 @@ restore_db_from_snapshot() {
 
     echo "Restoring snapshot $SNAPSHOT -> $SNAPSHOT_INSTANCE"
     aws rds restore-db-instance-from-db-snapshot \
-        --db-instance-class $DB_CLASS \
-        --db-instance-identifier $SNAPSHOT_INSTANCE \
-        --db-snapshot-identifier $SNAPSHOT \
-        --region $REGION
+        --region $REGION \
+        --db-instance-identifier "$SNAPSHOT_INSTANCE" \
+        --db-snapshot-identifier "$SNAPSHOT" \
+        --db-instance-class "$DB_CLASS" \
+        --db-subnet-group-name $NAME_OF_SUBNET_GROUP_IN_TARGET_VPC \
+        --vpc-security-group-ids $SECURITY_GROUP \
+        --db-parameter-group-name $DB_PARAMETER_GROUP_NAME
 
     wait_available $SNAPSHOT_INSTANCE
     echo "Renaming the original database $TARGET_INSTANCE -> $TEMPORARY_INSTANCE"
@@ -79,7 +84,6 @@ restore_db_from_snapshot() {
         --db-instance-identifier $SNAPSHOT_INSTANCE \
         --new-db-instance-identifier $TARGET_INSTANCE \
         --master-user-password $MASTER_USER_PASSWORD \
-        --vpc-security-group-ids $SECURITY_GROUP \
         --apply-immediately
 
     wait_available $TARGET_INSTANCE

@@ -1,4 +1,4 @@
-FROM python:2.7-alpine
+FROM python:3.12-alpine
 
 COPY requirements.txt /
 COPY restore_db_from_snapshot.sh /
