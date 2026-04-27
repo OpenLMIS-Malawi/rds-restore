@@ -1,6 +1,6 @@
 services:
     rds-restore:
-        image: openlmismw/rds-restore:1.0
+        image: openlmismw/rds-restore:1.1
         volumes:
             - ./:/external
         env_file: .env
